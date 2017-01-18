@@ -6,6 +6,10 @@ import com.example.domain.Nutrition;
 
 public interface NutritionDao {
 	
-	void add(Nutrition nutrition);
+	int add(Nutrition nutrition);
 	List<Nutrition> findAll();
+	Nutrition find(int id);
+	void update(Nutrition nutrition);
+	void delete(long id);
+	void delete(List<Long> ids);
 }

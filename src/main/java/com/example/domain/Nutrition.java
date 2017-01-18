@@ -1,6 +1,8 @@
 package com.example.domain;
 
-public class Nutrition {
+import java.io.Serializable;
+
+public class Nutrition implements Serializable{
 	private long id;
 	private String product;
 	private int calories;

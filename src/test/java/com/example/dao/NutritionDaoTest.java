@@ -17,38 +17,56 @@ import com.example.domain.Nutrition;
 public class NutritionDaoTest {
 
 	Random random = new Random();
-	
+
 	@Autowired
 	NutritionDao nutritionDao;
-	
+
+	@Test
+	public void testFind() {
+		Nutrition nutrition = new Nutrition();
+
+		String product = Integer.toString(random.nextInt());
+		nutrition.setProduct(product);
+
+		int calories = random.nextInt();
+		nutrition.setCalories(calories);
+
+		int carbs = random.nextInt();
+		nutrition.setCarbs(carbs);
+
+		int id = nutritionDao.add(nutrition);
+		Nutrition nutrition2 = nutritionDao.find(id);
+		Assert.assertEquals(nutrition, nutrition2);
+	}
+
 	@Test
 	public void testCreate() {
 		Nutrition nutrition = new Nutrition();
-		
+
 		String product = Integer.toString(random.nextInt());
 		nutrition.setProduct(product);
-		
+
 		int calories = random.nextInt();
 		nutrition.setCalories(calories);
-		
+
 		int carbs = random.nextInt();
 		nutrition.setCarbs(carbs);
-		
+
 		nutritionDao.add(nutrition);
-		
+
 		List<Nutrition> nutritions = nutritionDao.findAll();
 		Assert.assertNotNull(nutritions);
 		Assert.assertTrue(nutritions.size() > 0);
 		boolean found = false;
-		for	(Nutrition nut : nutritions){
-			if	(nut.equals(nutrition)){
+		for (Nutrition nut : nutritions) {
+			if (nut.equals(nutrition)) {
 				found = true;
 				break;
 			}
 		}
-		
+
 		Assert.assertTrue("Count not find " + nutrition, found);
-		
+
 	}
-	
+
 }
