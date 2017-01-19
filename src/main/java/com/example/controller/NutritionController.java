@@ -21,6 +21,7 @@ public class NutritionController {
 
 	 @GetMapping("/nutritions")
 	 	public String nutritionAll(Model model){
+		 System.out.println("\n\n\n!!!!!!!\n\n!!!!in get nutritions");
 		 model.addAttribute("nutritions", nutritionService.findAll());
 		 return "nutritions";
 	 }
