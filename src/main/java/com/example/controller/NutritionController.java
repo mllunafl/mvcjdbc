@@ -1,13 +1,16 @@
 package com.example.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
 import com.example.domain.Nutrition;
 import com.example.service.NutritionService;
 
+
+@Controller
 public class NutritionController {
 
 	@Autowired
@@ -21,7 +24,6 @@ public class NutritionController {
 
 	 @GetMapping("/nutritions")
 	 	public String nutritionAll(Model model){
-		 System.out.println("\n\n\n!!!!!!!\n\n!!!!in get nutritions");
 		 model.addAttribute("nutritions", nutritionService.findAll());
 		 return "nutritions";
 	 }
