@@ -56,7 +56,7 @@ public class NutritionServiceTest {
 		try{
 		nutritionService.delete(nutritionIds);
 		Assert.fail("should not be able to delete id3 not valid" + id3);
-		}catch(DataIntegrityViolationException e){
+		}catch(RuntimeException e){
 			Assert.assertTrue(true);
 		}
 		
@@ -69,7 +69,7 @@ public class NutritionServiceTest {
 				break;
 			}
 		}
-		Assert.assertTrue("Should find " + id1, !found);
+		Assert.assertTrue("Should find " + id1, found);
 	}
 
 	@Test

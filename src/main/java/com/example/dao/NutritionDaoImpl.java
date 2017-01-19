@@ -40,30 +40,27 @@ public class NutritionDaoImpl implements NutritionDao {
 
 	@Override
 	public void update(Nutrition nutrition) {
-		if(this.find((int) nutrition.getId())!=null){
-		jdbctemplate.update("UPDATE nutrition set product = ?, calories = ?, carbs = ? WHERE id = ?",
-				nutrition.getProduct(),
-				nutrition.getCalories(),
-				nutrition.getCarbs(),
-				nutrition.getId());
+		if (this.find((int) nutrition.getId()) != null) {
+			jdbctemplate.update("UPDATE nutrition set product = ?, calories = ?, carbs = ? WHERE id = ?",
+					nutrition.getProduct(), nutrition.getCalories(), nutrition.getCarbs(), nutrition.getId());
 		}
 	}
 
 	@Override
 	public void delete(long id) {
 		int intId = (int) id;
-		if(this.find(intId)!=null){
+		if (this.find(intId) == null) {
+			throw new RuntimeException();
+		}
+		if (this.find(intId) != null) {
 			jdbctemplate.update("DELETE from nutrition WHERE id = ?", id);
 		}
 	}
 
 	@Override
 	public void delete(List<Long> ids) {
-		for (Long id: ids){
-			int intId = id.intValue();
-			if(find(intId)!=null){
-			this.delete(id);
-			}
+		for (Long id : ids) {
+				this.delete(id);
 		}
 	}
 
