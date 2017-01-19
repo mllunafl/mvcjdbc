@@ -1,5 +1,7 @@
 package com.example.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -8,64 +10,80 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.example.domain.Nutrition;
-
+import com.mysql.jdbc.Statement;
 
 @Repository
 public class NutritionDaoImpl implements NutritionDao {
 
 	private static final Logger log = LoggerFactory.getLogger(NutritionDaoImpl.class);
-	
+
 	@Autowired
 	JdbcTemplate jdbctemplate;
 
 	@Override
 	public Nutrition find(int id) {
-		List<Nutrition> nutritions = jdbctemplate.query("select * from nutrition WHERE id = ?", new NutritionMapper(), id);
-		if(nutritions.size() > 0){
+		List<Nutrition> nutritions = jdbctemplate.query("select * from nutrition WHERE id = ?", new NutritionMapper(),
+				id);
+		if (nutritions.size() > 0) {
 			return nutritions.get(0);
-		}else{
+		} else {
 			return null;
 		}
 	}
 
 	@Override
 	public void update(Nutrition nutrition) {
-		// TODO Auto-generated method stub
-		
+		if(this.find((int) nutrition.getId())!=null){
+		jdbctemplate.update("UPDATE nutrition set product = ?, calories = ?, carbs = ? WHERE id = ?",
+				nutrition.getProduct(),
+				nutrition.getCalories(),
+				nutrition.getCarbs(),
+				nutrition.getId());
+		}
 	}
 
 	@Override
 	public void delete(long id) {
-		// TODO Auto-generated method stub
-		
+		int intId = (int) id;
+		if(this.find(intId)!=null){
+			jdbctemplate.update("DELETE from nutrition WHERE id = ?", id);
+		}
 	}
 
 	@Override
 	public void delete(List<Long> ids) {
-		// TODO Auto-generated method stub
-		
+		for (Long id: ids){
+			int intId = id.intValue();
+			if(find(intId)!=null){
+			this.delete(id);
+			}
+		}
 	}
-	
+
 	@Override
 	public int add(Nutrition nutrition) {
 		log.info("adding " + nutrition);
-		KeyHolder keyHolder = new GeneratedKeyHolder();
-		MapSqlParameterSource params = new MapSqlParameterSource();
-		params.addValue("prodcut", nutrition.getProduct());
-		params.addValue("calories", nutrition.getCalories());
-		params.addValue("carbs", nutrition.getCarbs());
-		
-		String [] keys = {"id"};
-		jdbctemplate.update("INSERT INTO nutrition (product, calories, carbs) VALUES (?,?,?)",params, keyHolder, keys);
+		KeyHolder holder = new GeneratedKeyHolder();
+		String sql = "INSERT INTO nutrition (product, calories, carbs) VALUES (?,?,?)";
+		jdbctemplate.update(new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+				PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				ps.setString(1, nutrition.getProduct());
+				ps.setInt(2, nutrition.getCalories());
+				ps.setInt(3, nutrition.getCarbs());
+				return ps;
+			}
+		}, holder);
 		log.info("exiting add method" + nutrition);
-		return keyHolder.getKey().intValue();
+		return (int) holder.getKey().longValue();
 	}
 
 	@Override
@@ -75,8 +93,8 @@ public class NutritionDaoImpl implements NutritionDao {
 		log.info("exitting findAll");
 		return nutritions;
 	}
-	
-	private static class NutritionMapper implements RowMapper<Nutrition>{
+
+	private static class NutritionMapper implements RowMapper<Nutrition> {
 
 		@Override
 		public Nutrition mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -87,7 +105,7 @@ public class NutritionDaoImpl implements NutritionDao {
 			nutrition.setCarbs(rs.getInt("carbs"));
 			return nutrition;
 		}
-		
+
 	}
 
 }
