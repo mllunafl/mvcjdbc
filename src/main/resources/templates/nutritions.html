@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Getting Started: Handling Form Submission</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<h1>List of Product Nutrition</h1>
+	<table>
+		<tr>
+			<th>Product Name</th>
+			<th>Calories</th>
+			<th>Carbs</th>
+		</tr>
+		<tr th:each="nutrition: ${nutritions}">
+		<td th:text="'Product Name: ' + ${nutrition.product}" />
+		<td th:text="'Calories: ' + ${nutrition.calories}" />
+		<td th:text="'Carbs: ' + ${nutrition.carbs}" />
+		</tr>
+	</table>
+	<p>
+		<a href="/nutrition">Submit another product nutrition</a>
+	</p>
+</body>
+</html>
