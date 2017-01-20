@@ -9,11 +9,13 @@
 	<table>
 		<tr>
 			<th>Product Name</th>
+			<th>Nutrition IDs</th>
 			<th>Calories</th>
 			<th>Carbs</th>
 		</tr>
 		<tr th:each="nutrition: ${nutritions}">
 		<td th:text="'Product Name: ' + ${nutrition.product}" />
+		<td th:text="'Nutrition ID: ' + ${nutrition.id}" />
 		<td th:text="'Calories: ' + ${nutrition.calories}" />
 		<td th:text="'Carbs: ' + ${nutrition.carbs}" />
 		</tr>

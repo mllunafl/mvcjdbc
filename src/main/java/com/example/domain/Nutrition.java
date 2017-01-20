@@ -3,10 +3,22 @@ package com.example.domain;
 import java.io.Serializable;
 
 public class Nutrition implements Serializable {
+
+	private enum FoodGroup {
+	    DAIRY, GRAIN, VEGETABLE, FRUIT, PROTEIN
+	}
 	private long id;
 	private String product;
 	private int calories;
 	private int carbs;
+	private FoodGroup foodGroup;
+
+	public FoodGroup getFoodGroup() {
+		return foodGroup;
+	}
+	public void setFoodGroup(FoodGroup foodGroup) {
+		this.foodGroup = foodGroup;
+	}
 	public long getId() {
 		return id;
 	}
@@ -33,7 +45,8 @@ public class Nutrition implements Serializable {
 	}
 	@Override
 	public String toString() {
-		return "Nutrition [id=" + id + ", product=" + product + ", calories=" + calories + ", carbs=" + carbs + "]";
+		return "Nutrition [id=" + id + ", product=" + product + ", calories=" + calories + ", carbs=" + carbs
+				+ ", foodGroup=" + foodGroup + "]";
 	}
 	@Override
 	public int hashCode() {
@@ -41,6 +54,7 @@ public class Nutrition implements Serializable {
 		int result = 1;
 		result = prime * result + calories;
 		result = prime * result + carbs;
+		result = prime * result + ((foodGroup == null) ? 0 : foodGroup.hashCode());
 		result = prime * result + ((product == null) ? 0 : product.hashCode());
 		return result;
 	}
@@ -57,6 +71,8 @@ public class Nutrition implements Serializable {
 			return false;
 		if (carbs != other.carbs)
 			return false;
+		if (foodGroup != other.foodGroup)
+			return false;
 		if (product == null) {
 			if (other.product != null)
 				return false;
@@ -64,6 +80,5 @@ public class Nutrition implements Serializable {
 			return false;
 		return true;
 	}
-	
 	
 }
