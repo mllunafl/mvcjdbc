@@ -8,18 +8,25 @@
 	<h1>List of Product Nutrition</h1>
 	<table>
 		<tr>
+			<th>Nutrition IDs</th>
 			<th>Product Name</th>
 			<th>Calories</th>
 			<th>Carbs</th>
 		</tr>
-		<tr th:each="nutrition: ${nutritions}">
-		<td th:text="'Product Name: ' + ${nutrition.product}" />
-		<td th:text="'Calories: ' + ${nutrition.calories}" />
-		<td th:text="'Carbs: ' + ${nutrition.carbs}" />
+		<tr th:each="nutrition: ${nutritions}" >
+		<td> <a href="/view-nutrition/131">131</a></td>
+		<!-- <td th:text="${nutrition.id}" /> -->		
+		<td th:text="${nutrition.product}" />
+		<td th:text="${nutrition.calories}" />
+		<td th:text="${nutrition.carbs}" />
+		 <td>
+          <a th:href="@{/view-nutrition/${nutrition.id}}">view</a>
+        </td>
 		</tr>
 	</table>
 	<p>
 		<a href="/nutrition">Submit another product nutrition</a>
+	<!--  <tr th:each="o : ${orders}" th:class="${oStat.odd}? 'odd'"> th:href="@{/order/details(orderId=${o.id})}-->
 	</p>
 </body>
 </html>
