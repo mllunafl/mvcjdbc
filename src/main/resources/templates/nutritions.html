@@ -14,14 +14,15 @@
 			<th>Carbs</th>
 		</tr>
 		<tr th:each="nutrition: ${nutritions}" >
-		<td> <a href="/view-nutrition/131">131</a></td>
-		<!-- <td th:text="${nutrition.id}" /> -->		
+		<!-- <td> <a href="/view-nutrition/131">131</a></td> -->
+		<!-- <td th:text="${nutrition.id}" /> -->
+		<td align="center"> <a th:href="@{'/view-nutrition/' + ${nutrition.id}}" th:text="${nutrition.id}"></a></td>		
 		<td th:text="${nutrition.product}" />
 		<td th:text="${nutrition.calories}" />
 		<td th:text="${nutrition.carbs}" />
-		 <td>
-          <a th:href="@{/view-nutrition/${nutrition.id}}">view</a>
-        </td>
+		 <!-- <td>
+          <a href="nutr.html" th:href="@{/view-nutrition/${nutrition.id}}">view</a>
+        </td> -->
 		</tr>
 	</table>
 	<p>
