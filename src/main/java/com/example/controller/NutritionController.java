@@ -47,4 +47,7 @@ public class NutritionController {
 		model.addAttribute("nutrition",nutritionService.find(id));
 		return "nutr";
 	}
+	
+	@PostMapping("update")
+	public String nutritionUpdate()
 }
