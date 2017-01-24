@@ -1,19 +1,27 @@
 package com.example.controller;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.example.NutritionValidator;
 import com.example.domain.Nutrition;
@@ -21,6 +29,8 @@ import com.example.service.NutritionService;
 
 @Controller
 public class NutritionController {
+
+	private static final Logger logger = LoggerFactory.getLogger(NutritionController.class);
 
 	@Autowired
 	NutritionService nutritionService;
@@ -76,6 +86,9 @@ public class NutritionController {
 	@GetMapping("/view-nutrition/{id}")
 	public String nutritionView(@PathVariable("id") Integer id, Model model) {
 		System.out.println("we got the id!!!" + id);
+		if (id == 0) {
+			throw new RuntimeException("I'll be back");
+		}
 		model.addAttribute("nutrition", nutritionService.find(id));
 		return "nutr";
 	}
@@ -101,5 +114,19 @@ public class NutritionController {
 		nutritionService.delete(id);
 		model.addAttribute("nutritions", nutritionService.findAll());
 		return "/nutritions";
+	}
+
+	@ExceptionHandler(value = Exception.class)
+	public ModelAndView handleDefaultErrors(final Exception exception, final HttpServletRequest request,
+			final HttpServletResponse resp) {
+		logger.warn(exception.getMessage() + "\n" + stackTraceAsString(exception));
+		return new ModelAndView("error", "message", exception.getMessage());
+	}
+
+	private String stackTraceAsString(Exception exception) {
+		StringWriter sw = new StringWriter();
+		PrintWriter pw = new PrintWriter(sw);
+		exception.printStackTrace(pw);
+		return sw.toString();
 	}
 }
