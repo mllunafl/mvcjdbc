@@ -6,28 +6,31 @@
 </head>
 <body>
 	<h1>List of Product Nutrition</h1>
-	<table>
-		<tr>
-			<th>Nutrition IDs</th>
-			<th>Product Name</th>
-			<th>Calories</th>
-			<th>Carbs</th>
-		</tr>
-		<tr th:each="nutrition: ${nutritions}" >
-		<!-- <td> <a href="/view-nutrition/131">131</a></td> -->
-		<!-- <td th:text="${nutrition.id}" /> -->
-		<td align="center"> <a th:href="@{'/view-nutrition/' + ${nutrition.id}}" th:text="${nutrition.id}"></a></td>		
-		<td th:text="${nutrition.product}" />
-		<td th:text="${nutrition.calories}" />
-		<td th:text="${nutrition.carbs}" />
-		 <!-- <td>
-          <a href="nutr.html" th:href="@{/view-nutrition/${nutrition.id}}">view</a>
-        </td> -->
-		</tr>
-	</table>
+	<form action="#" th:action="@{/nutritions}" method="post">
+		<table>
+			<tr>
+				<th></th>
+				<th>Nutrition IDs</th>
+				<th>Product Name</th>
+				<th>Calories</th>
+				<th>Carbs</th>
+
+			</tr>
+			<tr th:each="nutrition: ${nutritions}">
+				<td><input type="checkbox" name="deleteIds"
+					th:value="${nutrition.id}" /></td>
+				<td align="center"><a
+					th:href="@{'/view-nutrition/' + ${nutrition.id}}"
+					th:text="${nutrition.id}"></a></td>
+				<td th:text="${nutrition.product}" />
+				<td th:text="${nutrition.calories}" />
+				<td th:text="${nutrition.carbs}" />
+			</tr>
+		</table>
+		<input type="submit" value="delete" />
+	</form>
 	<p>
 		<a href="/nutrition">Submit another product nutrition</a>
-	<!--  <tr th:each="o : ${orders}" th:class="${oStat.odd}? 'odd'"> th:href="@{/order/details(orderId=${o.id})}-->
 	</p>
 </body>
 </html>
