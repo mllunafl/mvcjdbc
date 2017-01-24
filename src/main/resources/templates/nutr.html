@@ -10,7 +10,7 @@
     <p th:text="'Product Name: ' + ${nutrition.product}" />
     <p th:text="'Calories: ' + ${nutrition.calories}" />
     <p th:text="'Carbs: ' + ${nutrition.carbs}" />
-    <a href="/nutritions">Go Back</a>
+    <a href="/nutritions">View List</a>
     <a th:href="@{'/edit-nutrition/' + ${nutrition.id}}">Edit</a>
     <a th:href="@{'/delete-nutrition/' + ${nutrition.id}}">Delete</a>
 </body>

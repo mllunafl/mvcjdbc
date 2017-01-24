@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 
+import com.example.NutritionValidator;
 import com.example.domain.Nutrition;
 import com.example.service.NutritionService;
 
@@ -23,6 +24,9 @@ public class NutritionController {
 
 	@Autowired
 	NutritionService nutritionService;
+
+	@Autowired
+	NutritionValidator validator;
 
 	@GetMapping("/nutrition")
 	public String nutritionForm(Model model) {
@@ -35,27 +39,32 @@ public class NutritionController {
 		model.addAttribute("nutritions", nutritionService.findAll());
 		return "nutritions";
 	}
+
 	@PostMapping("/nutritions")
-	public String deleteNutritions(@RequestParam(value="deleteIds", required=true) List<Long> ids,Model model, WebRequest webRequest) {
+	public String deleteNutritions(@RequestParam(value = "deleteIds", required = true) List<Long> ids, Model model,
+			WebRequest webRequest) {
 		System.out.println(ids);
 		nutritionService.delete(ids);
 		model.addAttribute("nutritions", nutritionService.findAll());
 		return "nutritions";
 	}
-	
 
 	@PostMapping("/nutrition")
 	public String nutritionSubmit(@Valid Nutrition nutrition, BindingResult bindingResult) {
 		System.out.println("in submit nutrition" + nutrition);
-		if(bindingResult.hasErrors()){
+		if (bindingResult.hasErrors()) {
 			System.out.println("error in binding");
 			return "nutrition";
 		}
-		else{
-		nutritionService.add(nutrition);
-		//nutritionService.findAll();
-		return "nutr";
+		validator.validate(nutrition, bindingResult);
+		if (bindingResult.hasErrors()) {
+			return "nutrition";
 		}
+
+		nutritionService.add(nutrition);
+		// nutritionService.findAll();
+		return "nutr";
+
 	}
 
 	@GetMapping("/nutr")
@@ -67,28 +76,28 @@ public class NutritionController {
 	@GetMapping("/view-nutrition/{id}")
 	public String nutritionView(@PathVariable("id") Integer id, Model model) {
 		System.out.println("we got the id!!!" + id);
-		model.addAttribute("nutrition",nutritionService.find(id));
+		model.addAttribute("nutrition", nutritionService.find(id));
 		return "nutr";
 	}
-	
+
 	@GetMapping("/edit-nutrition/{id}")
-	public String nutritionViewUpdate(@PathVariable("id") Integer id, Model model){
+	public String nutritionViewUpdate(@PathVariable("id") Integer id, Model model) {
 		System.out.println("get edit nutrition" + id);
 		nutritionService.find(id);
-		model.addAttribute("nutrition",nutritionService.find(id));
+		model.addAttribute("nutrition", nutritionService.find(id));
 		return "update-nutr";
 	}
-	
+
 	@PostMapping("/edit-nutrition/{id}")
-	public String nutritionUpdate(Nutrition nutrition, Model model){
+	public String nutritionUpdate(Nutrition nutrition, Model model) {
 		System.out.println("in nutrition" + nutrition);
 		nutritionService.update(nutrition);
 		model.addAttribute("nutrition", nutritionService.find((int) nutrition.getId()));
 		return "nutr";
 	}
-	
+
 	@RequestMapping("/delete-nutrition/{id}")
-	public String nutritonDelete(@PathVariable("id") Integer id, Model model){
+	public String nutritonDelete(@PathVariable("id") Integer id, Model model) {
 		nutritionService.delete(id);
 		model.addAttribute("nutritions", nutritionService.findAll());
 		return "/nutritions";
