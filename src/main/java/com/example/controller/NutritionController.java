@@ -1,11 +1,13 @@
 package com.example.controller;
 
-import java.util.Iterator;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,7 +45,10 @@ public class NutritionController {
 	
 
 	@PostMapping("/nutrition")
-	public String nutritionSubmit(Nutrition nutrition, Model model) {
+	public String nutritionSubmit(@Valid Nutrition nutrition, Model model, BindingResult bindingResult) {
+		if(bindingResult.hasErrors()){
+			return "nutrition";
+		}
 		nutritionService.add(nutrition);
 		model.addAttribute("nutritions", nutritionService.findAll());
 		return "nutritions";
