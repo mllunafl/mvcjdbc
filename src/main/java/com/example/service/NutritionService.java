@@ -2,14 +2,9 @@ package com.example.service;
 
 import java.util.List;
 
+import com.example.common.NutritionCrud;
 import com.example.domain.Nutrition;
 
-public interface NutritionService {
+public interface NutritionService extends NutritionCrud{
 
-	int add(Nutrition nutrition);
-	List<Nutrition> findAll();
-	Nutrition find(int id);
-	void update(Nutrition nutrition);
-	void delete(long id);
-	void delete(List<Long> ids);
 }
