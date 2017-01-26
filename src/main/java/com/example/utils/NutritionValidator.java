@@ -1,4 +1,4 @@
-package com.example;
+package com.example.utils;
 
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

@@ -23,9 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.example.NutritionValidator;
 import com.example.domain.Nutrition;
 import com.example.service.NutritionService;
+import com.example.utils.NutritionValidator;
 
 @Controller
 public class NutritionController {
@@ -47,6 +47,11 @@ public class NutritionController {
 	@RequestMapping("/login")
     public String login() {
         return "login";
+    }
+	
+	@PostMapping("/logout")
+    public String logout() {
+        return "/";
     }
 	
 	@PostMapping("/login")
