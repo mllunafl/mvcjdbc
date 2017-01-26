@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
 <title>Getting Started: Handling Form Submission</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -27,10 +27,15 @@
 				<td th:text="${nutrition.carbs}" />
 			</tr>
 		</table>
-		<input type="submit" value="delete" />
+		<sec:authorize access="hasRole('ROLE_ADMIN')">
+			<input type="submit" value="delete" />
+		</sec:authorize>
 	</form>
 	<p>
 		<a href="/nutrition">Submit another product nutrition</a>
 	</p>
+	<form th:action="@{/logout}" method="post">
+		<input type="submit" value="Sign Out" />
+	</form>
 </body>
 </html>

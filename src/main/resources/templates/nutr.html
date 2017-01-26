@@ -1,5 +1,7 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html 	xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:th="http://www.thymeleaf.org"
+		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <title>Getting Started: Handling Form Submission</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -10,8 +12,13 @@
     <p th:text="'Product Name: ' + ${nutrition.product}" />
     <p th:text="'Calories: ' + ${nutrition.calories}" />
     <p th:text="'Carbs: ' + ${nutrition.carbs}" />
+    
     <a href="/nutritions">View List</a>
     <a th:href="@{'/edit-nutrition/' + ${nutrition.id}}">Edit</a>
+    
+    <p sec:authorize="hasRole('ROLE_ADMIN')">
     <a th:href="@{'/delete-nutrition/' + ${nutrition.id}}">Delete</a>
+	</p>
+	
 </body>
 </html>

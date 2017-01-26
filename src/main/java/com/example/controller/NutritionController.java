@@ -43,6 +43,17 @@ public class NutritionController {
 		model.addAttribute("nutrition", new Nutrition());
 		return "nutrition";
 	}
+	
+	@RequestMapping("/login")
+    public String login() {
+        return "login";
+    }
+	
+	@PostMapping("/login")
+	public String nutritions(Model model) {
+		model.addAttribute("nutritions", nutritionService.findAll());
+		return "nutritions";
+	}
 
 	@GetMapping("/nutritions")
 	public String nutritionAll(Model model) {
