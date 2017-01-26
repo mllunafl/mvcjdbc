@@ -9,7 +9,7 @@
 	<form action="#" th:action="@{/nutritions}" method="post">
 		<table>
 			<tr>
-				<th></th>
+				<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
 				<th>Nutrition IDs</th>
 				<th>Product Name</th>
 				<th>Calories</th>
@@ -17,7 +17,7 @@
 
 			</tr>
 			<tr th:each="nutrition: ${nutritions}">
-				<td><input type="checkbox" name="deleteIds"
+				<td sec:authorize="hasRole('ROLE_ADMIN')"><input type="checkbox" name="deleteIds"
 					th:value="${nutrition.id}" /></td>
 				<td align="center"><a
 					th:href="@{'/view-nutrition/' + ${nutrition.id}}"
@@ -27,9 +27,9 @@
 				<td th:text="${nutrition.carbs}" />
 			</tr>
 		</table>
-		<sec:authorize access="hasRole('ROLE_ADMIN')">
+		<span sec:authorize="hasRole('ROLE_ADMIN')">
 			<input type="submit" value="delete" />
-		</sec:authorize>
+		</span>
 	</form>
 	<p>
 		<a href="/nutrition">Submit another product nutrition</a>
