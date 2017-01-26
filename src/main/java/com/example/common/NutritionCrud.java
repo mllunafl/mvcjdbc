@@ -11,8 +11,4 @@ public interface NutritionCrud {
 	void update(Nutrition nutrition);
 	void delete(long id);
 	void delete(List<Long> ids);
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 01f244a60d2d5ebde693c26555864c7aa56682db
