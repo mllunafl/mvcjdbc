@@ -16,7 +16,8 @@
     <a href="/nutritions">View List</a>
     <a th:href="@{'/edit-nutrition/' + ${nutrition.id}}">Edit</a>
     
-    <p sec:authorize="hasRole('ROLE_ADMIN')">
+<!--     <input onclick="return confirm('Are you sure you want to delete?') ? true : false;" name="delete" type="button" value="Delete"/>
+ -->    <p sec:authorize="hasRole('ROLE_ADMIN')">
     <a th:href="@{'/delete-nutrition/' + ${nutrition.id}}">Delete</a>
 	</p>
 	
