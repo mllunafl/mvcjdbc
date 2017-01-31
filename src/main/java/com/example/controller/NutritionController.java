@@ -62,25 +62,26 @@ public class NutritionController {
                                 .fromMethodName(NutritionController.class, "serveFile", path.getFileName().toString())
                                 .build().toString())
                 .collect(Collectors.toList()));
-		// model.addAttribute("nutrition", nutritionService.find(id));
+		model.addAttribute("id", id);
 		return "upload";
 	}
 	
 	 @GetMapping("/view-nutrition/{id}/files/{filename:.+}")
 	    @ResponseBody
 	    public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
-
+			//model.addAttribute("id", id);
 	        Resource file = storageService.loadAsResource(filename);
 	        return ResponseEntity
 	                .ok()
 	                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+file.getFilename()+"\"")
 	                .body(file);
-	    }
+	        
+	 }
 	
 	@PostMapping("/view-nutrition/{id}/files")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file,
+    public String handleFileUpload(@RequestParam("file") MultipartFile file,@PathVariable("id") Integer id,Model model,
                                    RedirectAttributes redirectAttributes) {
-
+		model.addAttribute("id", id);
         storageService.store(file);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
