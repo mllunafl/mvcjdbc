@@ -15,6 +15,7 @@
     
     <a href="/nutritions">View List</a>
     <a th:href="@{'/edit-nutrition/' + ${nutrition.id}}">Edit</a>
+    <a th:href="@{${nutrition.id} + '/files'}">Upload file</a>
     
 <!--     <input onclick="return confirm('Are you sure you want to delete?') ? true : false;" name="delete" type="button" value="Delete"/>
  -->    <p sec:authorize="hasRole('ROLE_ADMIN')">

@@ -1,5 +1,11 @@
 package com.example.dao;
 
-public interface FileDao {
+import java.util.List;
 
+import com.example.domain.File;
+
+public interface FileDao {
+	void addFile(int id, File file);
+	void deleteFile(int id);
+	List<String> fileList();
 }
