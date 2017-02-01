@@ -49,7 +49,7 @@ public class StorageServiceImpl implements StorageService {
 	}
 
 	@Override
-	public Stream<Path> loadAll(Integer id) {
+	public Stream<Path> loadAll(String id) {
 		Path idPath = Paths.get(this.rootLocation + "/" + id);
 			this.init(id);
 	
@@ -65,6 +65,7 @@ public class StorageServiceImpl implements StorageService {
 	@Override
 	public Resource loadAsResource(String filename, String id) {
 		try {
+			System.out.println("filename is" + filename + "for id" + id);
 			Path file = rootLocation.resolve(id + "/"+ filename);
 			Resource resource = new UrlResource(file.toUri());
 			if (resource.exists() || resource.isReadable()) {
@@ -79,7 +80,7 @@ public class StorageServiceImpl implements StorageService {
 	}
 	
 	@Override
-	public void init(Integer id) {
+	public void init(String id) {
 		Path idPath = Paths.get(this.rootLocation + "/" + id);
 		System.out.println("/n!!!/n!!!/n!!!"+idPath);
 		try{

@@ -51,10 +51,10 @@ public class NutritionController {
 	StorageService storageService;
 
 	@GetMapping("/view-nutrition/{id}/files")
-	public String uploadFile(@PathVariable("id") Integer id, Model model) {
-		if (id == 0) {
-			throw new RuntimeException("I'll be back");
-		}
+	public String uploadFile(@PathVariable("id") String id, Model model) {
+//		if (id == 0) {
+//			throw new RuntimeException("I'll be back");
+//		}
 		model.addAttribute("files", storageService
                 .loadAll(id)
                 .map(path ->
@@ -68,7 +68,7 @@ public class NutritionController {
 	
 	 @GetMapping("/view-nutrition/{id}/files/{filename:.+}")
 	    @ResponseBody
-	    public ResponseEntity<Resource> serveFile(@PathVariable String filename, @PathVariable("id") String id) {
+	    public ResponseEntity<Resource> serveFile(@PathVariable("id") String id, @PathVariable String filename) {
 			//model.addAttribute("id", id);
 	        Resource file = storageService.loadAsResource(id, filename);
 	        return ResponseEntity
