@@ -14,9 +14,7 @@ public interface StorageService {
 
     Stream<Path> loadAll(Integer id);
 
-    Path load(String filename);
-
-    Resource loadAsResource(String filename);
+    Resource loadAsResource(String filename, String id);
 
     void deleteAll();
 }

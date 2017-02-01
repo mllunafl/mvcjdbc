@@ -68,9 +68,9 @@ public class NutritionController {
 	
 	 @GetMapping("/view-nutrition/{id}/files/{filename:.+}")
 	    @ResponseBody
-	    public ResponseEntity<Resource> serveFile(@PathVariable String filename, @PathVariable("id") Integer id) {
+	    public ResponseEntity<Resource> serveFile(@PathVariable String filename, @PathVariable("id") String id) {
 			//model.addAttribute("id", id);
-	        Resource file = storageService.loadAsResource(filename);
+	        Resource file = storageService.loadAsResource(id, filename);
 	        return ResponseEntity
 	                .ok()
 	                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+file.getFilename()+"\"")

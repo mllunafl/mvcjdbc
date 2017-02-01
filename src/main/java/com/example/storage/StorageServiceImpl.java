@@ -63,14 +63,9 @@ public class StorageServiceImpl implements StorageService {
 	}
 
 	@Override
-	public Path load(String filename) {
-		return rootLocation.resolve(filename);
-	}
-
-	@Override
-	public Resource loadAsResource(String filename) {
+	public Resource loadAsResource(String filename, String id) {
 		try {
-			Path file = load(filename);
+			Path file = rootLocation.resolve(id + "/"+ filename);
 			Resource resource = new UrlResource(file.toUri());
 			if (resource.exists() || resource.isReadable()) {
 				return resource;
