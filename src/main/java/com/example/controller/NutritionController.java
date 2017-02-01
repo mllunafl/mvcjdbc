@@ -56,10 +56,10 @@ public class NutritionController {
 			throw new RuntimeException("I'll be back");
 		}
 		model.addAttribute("files", storageService
-                .loadAll()
+                .loadAll(id)
                 .map(path ->
                         MvcUriComponentsBuilder
-                                .fromMethodName(NutritionController.class, "serveFile", path.getFileName().toString())
+                                .fromMethodName(NutritionController.class, "serveFile", path.getFileName().toString(), id)
                                 .build().toString())
                 .collect(Collectors.toList()));
 		model.addAttribute("id", id);
@@ -68,7 +68,7 @@ public class NutritionController {
 	
 	 @GetMapping("/view-nutrition/{id}/files/{filename:.+}")
 	    @ResponseBody
-	    public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
+	    public ResponseEntity<Resource> serveFile(@PathVariable String filename, @PathVariable("id") Integer id) {
 			//model.addAttribute("id", id);
 	        Resource file = storageService.loadAsResource(filename);
 	        return ResponseEntity
@@ -79,10 +79,9 @@ public class NutritionController {
 	 }
 	
 	@PostMapping("/view-nutrition/{id}/files")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file,@PathVariable("id") Integer id,Model model,
+    public String handleFileUpload(@RequestParam("file") MultipartFile file,@PathVariable("id") String id,Model model,
                                    RedirectAttributes redirectAttributes) {
-		model.addAttribute("id", id);
-        storageService.store(file);
+        storageService.store(file, id);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 

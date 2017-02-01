@@ -21,8 +21,8 @@ public class MvcjdbcApplication {
 	@Bean
 	CommandLineRunner init(StorageService storageService) {
 		return (args) -> {
-            storageService.deleteAll();
-            storageService.init();
+            //storageService.deleteAll();
+            //storageService.init();
 		};
 	}
 }
