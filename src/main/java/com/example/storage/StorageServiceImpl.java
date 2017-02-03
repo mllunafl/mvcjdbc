@@ -30,7 +30,7 @@ public class StorageServiceImpl implements StorageService {
     }
 
 	@Override
-	public void store(Integer id, MultipartFile file) {
+	public void store(Long id, MultipartFile file) {
 		Path idPath = Paths.get(this.rootLocation + "/" + id);
 		System.out.println("/n!!!/n!!!/n!!!"+idPath);
 		try{
@@ -52,7 +52,7 @@ public class StorageServiceImpl implements StorageService {
 	}
 
 	@Override
-	public Stream<Path> loadAll(Integer id) {
+	public Stream<Path> loadAll(Long id) {
 		Path idPath = Paths.get(this.rootLocation + "/" + id);
 			this.init(id);
 	
@@ -66,7 +66,7 @@ public class StorageServiceImpl implements StorageService {
 	}
 
 	@Override
-	public Resource loadAsResource(Integer id, String filename) {
+	public Resource loadAsResource(Long id, String filename) {
 		try {
 			System.out.println("filename is" + filename + "for id" + id);
 			Path file = rootLocation.resolve(id + "/"+ filename);
@@ -83,7 +83,7 @@ public class StorageServiceImpl implements StorageService {
 	}
 	
 	@Override
-	public void init(Integer id) {
+	public void init(Long id) {
 		Path idPath = Paths.get(this.rootLocation + "/" + id);
 		System.out.println("/n!!!/n!!!/n!!!"+idPath);
 		try{

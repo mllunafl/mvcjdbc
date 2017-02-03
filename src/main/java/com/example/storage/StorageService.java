@@ -10,13 +10,13 @@ import com.example.domain.File;
 
 public interface StorageService {
 
-	void init(Integer id);
+	void init(Long id);
 	
-	void store(Integer id, MultipartFile file);
+	void store(Long id, MultipartFile file);
 
-    Stream<Path> loadAll(Integer id);
+    Stream<Path> loadAll(Long id);
 
-    Resource loadAsResource(Integer id,String filename );
+    Resource loadAsResource(Long id,String filename );
 
     void deleteAll();
 }

@@ -13,7 +13,6 @@ import javax.persistence.Table;
 public class File {
 	
 	private int id;
-	private int nutrition_id;
 	private String fileName;
 	private Nutrition nutrition;
 	
@@ -34,12 +33,7 @@ public class File {
 	public void setNutrition(Nutrition nutrition) {
 		this.nutrition = nutrition;
 	}
-	public int getNutrition_id() {
-		return nutrition_id;
-	}
-	public void setNutrition_id(int nutrition_id) {
-		this.nutrition_id = nutrition_id;
-	}
+
 	public String getFileName() {
 		return fileName;
 	}
@@ -70,7 +64,8 @@ public class File {
 	}
 	@Override
 	public String toString() {
-		return "File [id=" + id + ", nutrition_id=" + nutrition_id + ", fileName=" + fileName + "]";
-	}	
+		return "File [id=" + id + ", fileName=" + fileName + "]";
+	}
+	
 	
 }

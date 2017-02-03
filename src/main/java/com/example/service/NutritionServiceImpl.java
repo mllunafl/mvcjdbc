@@ -32,7 +32,7 @@ public class NutritionServiceImpl implements NutritionService {
 	}
 
 	@Override
-	public Nutrition find(int id) {
+	public Nutrition find(long id) {
 		return nutritionDao.findOne(id);
 	}
 
@@ -45,23 +45,24 @@ public class NutritionServiceImpl implements NutritionService {
 	@Override
 	@Transactional
 	public void delete(long id) {
-		nutritionDao.delete((int) id);
+		nutritionDao.delete(id);
 	}
 
 	@Override
 	@Transactional
 	public void delete(List<Long> ids) {
 		for(long id: ids){
-			nutritionDao.delete((int) id);
+			nutritionDao.delete(id);
 		}
 	}
 
 	@Override
-	public Nutrition addFile(Integer id, String fileName) {
+	public Nutrition addFile(Long id, String fileName) {
+		Nutrition nutrition = nutritionDao.findOne(id);
 		File myFile = new File();
 		myFile.setFileName(fileName);
+		myFile.setNutrition(nutrition);
 		myFile = fileDao.save(myFile);
-		Nutrition nutrition = nutritionDao.findOne(id);
 		nutrition.getFiles().add(myFile);
 		nutrition = nutritionDao.save(nutrition);
 		return nutrition;

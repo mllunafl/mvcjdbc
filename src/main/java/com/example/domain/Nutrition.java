@@ -32,11 +32,11 @@ public class Nutrition implements Serializable {
 	
 	private List<File> files = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "nutriton", fetch=FetchType.LAZY)
+	@OneToMany(mappedBy = "nutrition", fetch=FetchType.LAZY)
 	public List<File> getFiles() {
 		return files;
 	}
-	public void setFile(List<File> files) {
+	public void setFiles(List<File> files) {
 		this.files = files;
 	}
 	@Id
