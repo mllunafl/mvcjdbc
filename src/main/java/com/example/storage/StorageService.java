@@ -8,13 +8,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface StorageService {
 
-	void init(String id);
+	void init(Integer id);
 	
-	void store(MultipartFile file, String id);
+	void store(Integer id, MultipartFile file);
 
-    Stream<Path> loadAll(String id);
+    Stream<Path> loadAll(Integer id);
 
-    Resource loadAsResource(String filename, String id);
+    Resource loadAsResource(Integer id,String filename );
 
     void deleteAll();
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.dao.FileDao;
 import com.example.dao.NutritionDao;
 import com.example.domain.Nutrition;
 
@@ -15,6 +16,8 @@ public class NutritionServiceImpl implements NutritionService {
 
 	@Autowired
 	NutritionDao nutritionDao;
+	@Autowired
+	FileDao fileDao;
 	
 	@Override
 	@Transactional
@@ -29,7 +32,12 @@ public class NutritionServiceImpl implements NutritionService {
 
 	@Override
 	public Nutrition find(int id) {
-		return nutritionDao.find(id);
+		Nutrition nutrition = nutritionDao.find(id);
+		List<String> fileNutList = nutrition.getFilenames();
+		List<String> fileList = fileDao.fileList(id);
+		fileNutList.addAll(0, fileList);
+		System.out.println(fileNutList);
+		return nutrition;
 	}
 
 	@Override

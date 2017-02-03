@@ -12,6 +12,14 @@
     <p th:text="'Product Name: ' + ${nutrition.product}" />
     <p th:text="'Calories: ' + ${nutrition.calories}" />
     <p th:text="'Carbs: ' + ${nutrition.carbs}" />
+    <div>
+		<ul>
+			<li th:each="file : ${files}">
+				<a th:href="@{${id} + '/files/' + ${file}}" th:text="${file}" />
+				
+			</li>
+		</ul>
+	</div>
     
     <a href="/nutritions">View List</a>
     <a th:href="@{'/edit-nutrition/' + ${nutrition.id}}">Edit</a>

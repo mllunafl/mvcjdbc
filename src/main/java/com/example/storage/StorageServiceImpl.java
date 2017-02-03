@@ -14,20 +14,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.dao.FileDao;
+
 
 
 @Service
 public class StorageServiceImpl implements StorageService {
 
 	private final Path rootLocation;
-
+	@Autowired
+	FileDao fileDao;
+	
     @Autowired
     public StorageServiceImpl(StorageProperties properties) {
         this.rootLocation = Paths.get(properties.getLocation());
     }
 
 	@Override
-	public void store(MultipartFile file, String id) {
+	public void store(Integer id, MultipartFile file) {
 		Path idPath = Paths.get(this.rootLocation + "/" + id);
 		System.out.println("/n!!!/n!!!/n!!!"+idPath);
 		try{
@@ -46,10 +50,11 @@ public class StorageServiceImpl implements StorageService {
 		} catch (IOException e) {
 			throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
 		}
+		fileDao.addFile(id, file.getOriginalFilename());
 	}
 
 	@Override
-	public Stream<Path> loadAll(String id) {
+	public Stream<Path> loadAll(Integer id) {
 		Path idPath = Paths.get(this.rootLocation + "/" + id);
 			this.init(id);
 	
@@ -63,7 +68,7 @@ public class StorageServiceImpl implements StorageService {
 	}
 
 	@Override
-	public Resource loadAsResource(String filename, String id) {
+	public Resource loadAsResource(Integer id, String filename) {
 		try {
 			System.out.println("filename is" + filename + "for id" + id);
 			Path file = rootLocation.resolve(id + "/"+ filename);
@@ -80,7 +85,7 @@ public class StorageServiceImpl implements StorageService {
 	}
 	
 	@Override
-	public void init(String id) {
+	public void init(Integer id) {
 		Path idPath = Paths.get(this.rootLocation + "/" + id);
 		System.out.println("/n!!!/n!!!/n!!!"+idPath);
 		try{

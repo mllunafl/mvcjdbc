@@ -51,7 +51,7 @@ public class NutritionController {
 	StorageService storageService;
 
 	@GetMapping("/view-nutrition/{id}/files")
-	public String uploadFile(@PathVariable("id") String id, Model model) {
+	public String uploadFile(@PathVariable("id") Integer id, Model model) {
 //		if (id == 0) {
 //			throw new RuntimeException("I'll be back");
 //		}
@@ -59,7 +59,7 @@ public class NutritionController {
                 .loadAll(id)
                 .map(path ->
                         MvcUriComponentsBuilder
-                                .fromMethodName(NutritionController.class, "serveFile", path.getFileName().toString(), id)
+                                .fromMethodName(NutritionController.class, "serveFile", Integer.toString(id), path.getFileName().toString())
                                 .build().toString())
                 .collect(Collectors.toList()));
 		model.addAttribute("id", id);
@@ -68,7 +68,7 @@ public class NutritionController {
 	
 	 @GetMapping("/view-nutrition/{id}/files/{filename:.+}")
 	    @ResponseBody
-	    public ResponseEntity<Resource> serveFile(@PathVariable("id") String id, @PathVariable String filename) {
+	    public ResponseEntity<Resource> serveFile(@PathVariable("id") Integer id, @PathVariable String filename) {
 			//model.addAttribute("id", id);
 	        Resource file = storageService.loadAsResource(id, filename);
 	        return ResponseEntity
@@ -78,10 +78,11 @@ public class NutritionController {
 	        
 	 }
 	
+	 
 	@PostMapping("/view-nutrition/{id}/files")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file,@PathVariable("id") String id,Model model,
+    public String handleFileUpload(@RequestParam("file") MultipartFile file,@PathVariable("id") Integer id,Model model,
                                    RedirectAttributes redirectAttributes) {
-        storageService.store(file, id);
+        storageService.store(id, file);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 
@@ -156,6 +157,15 @@ public class NutritionController {
 			throw new RuntimeException("I'll be back");
 		}
 		model.addAttribute("nutrition", nutritionService.find(id));
+		model.addAttribute("files", nutritionService.find(id).getFilenames());
+		//		model.addAttribute("files", storageService
+//                .loadAll(id)
+//                .map(path ->
+//                        MvcUriComponentsBuilder
+//                                .fromMethodName(NutritionController.class, "serveFile", Integer.toString(id), path.getFileName().toString())
+//                                .build().toString())
+//                .collect(Collectors.toList()));
+		model.addAttribute("id", id);
 		return "nutr";
 	}
 
