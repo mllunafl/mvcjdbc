@@ -1,6 +1,8 @@
 package com.example.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -19,7 +21,12 @@ public class Nutrition implements Serializable {
 	@NotNull
 	private int carbs;
 	
+	private List<String> filenames = new ArrayList<>();
 	
+	
+	public List<String> getFilenames() {
+		return filenames;
+	}
 	public long getId() {
 		return id;
 	}
@@ -46,7 +53,8 @@ public class Nutrition implements Serializable {
 	}
 	@Override
 	public String toString() {
-		return "Nutrition [id=" + id + ", product=" + product + ", calories=" + calories + ", carbs=" + carbs + "]";
+		return "Nutrition [id=" + id + ", product=" + product + ", calories=" + calories + ", carbs=" + carbs
+				+ ", filenames=" + filenames + "]";
 	}
 	@Override
 	public int hashCode() {
@@ -54,6 +62,7 @@ public class Nutrition implements Serializable {
 		int result = 1;
 		result = prime * result + calories;
 		result = prime * result + carbs;
+		result = prime * result + ((filenames == null) ? 0 : filenames.hashCode());
 		result = prime * result + ((product == null) ? 0 : product.hashCode());
 		return result;
 	}
@@ -70,6 +79,11 @@ public class Nutrition implements Serializable {
 			return false;
 		if (carbs != other.carbs)
 			return false;
+		if (filenames == null) {
+			if (other.filenames != null)
+				return false;
+		} else if (!filenames.equals(other.filenames))
+			return false;
 		if (product == null) {
 			if (other.product != null)
 				return false;
@@ -77,6 +91,4 @@ public class Nutrition implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
 }

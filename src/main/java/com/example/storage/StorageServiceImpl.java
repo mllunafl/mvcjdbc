@@ -14,37 +14,53 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.dao.FileDao;
+
 
 
 @Service
 public class StorageServiceImpl implements StorageService {
 
 	private final Path rootLocation;
-
+	@Autowired
+	FileDao fileDao;
+	
     @Autowired
     public StorageServiceImpl(StorageProperties properties) {
         this.rootLocation = Paths.get(properties.getLocation());
     }
 
 	@Override
-	public void store(MultipartFile file) {
+	public void store(Integer id, MultipartFile file) {
+		Path idPath = Paths.get(this.rootLocation + "/" + id);
+		System.out.println("/n!!!/n!!!/n!!!"+idPath);
+		try{
+			Files.createDirectories(idPath);
+		}catch(IOException e){
+			throw new StorageException("Couldn't initialize");
+		}
+		
 		try {
 			if (file.isEmpty()) {
 				throw new StorageException("Failed to store empty file " + file.getOriginalFilename());
 			}
 			// don't want to read all the file and then write it to memory,
 			// stream less memory
-			Files.copy(file.getInputStream(), this.rootLocation.resolve(file.getOriginalFilename()));
+			Files.copy(file.getInputStream(), idPath.resolve(file.getOriginalFilename()));
 		} catch (IOException e) {
 			throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
 		}
+		fileDao.addFile(id, file.getOriginalFilename());
 	}
 
 	@Override
-	public Stream<Path> loadAll() {
+	public Stream<Path> loadAll(Integer id) {
+		Path idPath = Paths.get(this.rootLocation + "/" + id);
+			this.init(id);
+	
 		try {
-			return Files.walk(this.rootLocation, 1).filter(path -> !path.equals(this.rootLocation))
-					.map(path -> this.rootLocation.relativize(path));
+			return Files.walk(idPath, 1).filter(path -> !path.equals(idPath))
+					.map(path -> idPath.relativize(path));
 		} catch (IOException e) {
 			throw new StorageException("Failed to read stored files", e);
 		}
@@ -52,14 +68,10 @@ public class StorageServiceImpl implements StorageService {
 	}
 
 	@Override
-	public Path load(String filename) {
-		return rootLocation.resolve(filename);
-	}
-
-	@Override
-	public Resource loadAsResource(String filename) {
+	public Resource loadAsResource(Integer id, String filename) {
 		try {
-			Path file = load(filename);
+			System.out.println("filename is" + filename + "for id" + id);
+			Path file = rootLocation.resolve(id + "/"+ filename);
 			Resource resource = new UrlResource(file.toUri());
 			if (resource.exists() || resource.isReadable()) {
 				return resource;
@@ -73,11 +85,13 @@ public class StorageServiceImpl implements StorageService {
 	}
 	
 	@Override
-	public void init() {
-		try {
-			Files.createDirectory(rootLocation);
-		} catch (IOException e) {
-			throw new StorageException("Could not initialize storage", e);
+	public void init(Integer id) {
+		Path idPath = Paths.get(this.rootLocation + "/" + id);
+		System.out.println("/n!!!/n!!!/n!!!"+idPath);
+		try{
+			Files.createDirectories(idPath);
+		}catch(IOException e){
+			throw new StorageException("Couldn't initialize");
 		}
 	}
 	

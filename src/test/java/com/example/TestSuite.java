@@ -11,10 +11,10 @@ import com.example.service.NutritionServiceTest;
 @RunWith(Suite.class)
 
 @Suite.SuiteClasses({
-   MvcjdbcApplicationTests.class,
+//   MvcjdbcApplicationTests.class,
   NutritionDaoTest.class,
   NutritionServiceTest.class,
-  NutritionControllerTest.class
+ // NutritionControllerTest.class
 })
 
 public class TestSuite {}
