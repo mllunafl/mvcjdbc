@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.dao.FileDao;
 import com.example.dao.NutritionDao;
+import com.example.domain.File;
 import com.example.domain.Nutrition;
 
 
@@ -21,8 +22,8 @@ public class NutritionServiceImpl implements NutritionService {
 	
 	@Override
 	@Transactional
-	public int add(Nutrition nutrition) {
-		return nutritionDao.add(nutrition);
+	public Nutrition add(Nutrition nutrition) {
+		return nutritionDao.save(nutrition);
 	}
 
 	@Override
@@ -32,29 +33,38 @@ public class NutritionServiceImpl implements NutritionService {
 
 	@Override
 	public Nutrition find(int id) {
-		Nutrition nutrition = nutritionDao.find(id);
-		List<String> fileNutList = nutrition.getFilenames();
-		List<String> fileList = fileDao.fileList(id);
-		fileNutList.addAll(0, fileList);
-		System.out.println(fileNutList);
-		return nutrition;
+		return nutritionDao.findOne(id);
 	}
 
 	@Override
 	@Transactional
 	public void update(Nutrition nutrition) {
-		nutritionDao.update(nutrition);
+		nutritionDao.save(nutrition);
 	}
 
 	@Override
 	@Transactional
 	public void delete(long id) {
-		nutritionDao.delete(id);
+		nutritionDao.delete((int) id);
 	}
 
 	@Override
 	@Transactional
 	public void delete(List<Long> ids) {
-		nutritionDao.delete(ids);
+		for(long id: ids){
+			nutritionDao.delete((int) id);
+		}
+	}
+
+	@Override
+	public Nutrition addFile(Integer id, String fileName) {
+		File myFile = new File();
+		myFile.setFileName(fileName);
+		myFile = fileDao.save(myFile);
+		Nutrition nutrition = nutritionDao.findOne(id);
+		nutrition.getFiles().add(myFile);
+		nutrition = nutritionDao.save(nutrition);
+		return nutrition;
 	}	
+	
 }

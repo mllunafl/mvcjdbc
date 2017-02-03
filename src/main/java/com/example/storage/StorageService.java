@@ -6,6 +6,8 @@ import java.util.stream.Stream;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.domain.File;
+
 public interface StorageService {
 
 	void init(Integer id);

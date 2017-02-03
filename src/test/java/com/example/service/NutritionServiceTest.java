@@ -30,7 +30,7 @@ public class NutritionServiceTest extends NutritionCrudTest {
 	@Test
 	public void testUpdateFail() {
 		Nutrition nutrition1 = this.createNewNutrition();
-		int nut1Id = nutritionService.add(nutrition1);
+		int nut1Id = (int) nutritionService.add(nutrition1).getId();
 
 		Nutrition nutrition2 = nutritionService.find(nut1Id);
 		nutrition2.setProduct("A VarChar that is tooooooooooooooooooo longggggg");
@@ -48,8 +48,8 @@ public class NutritionServiceTest extends NutritionCrudTest {
 	public void testDeleteListFail(){
 		Nutrition nutriton1 = this.createNewNutrition();
 		Nutrition nutrion2 = this.createNewNutrition();
-		int id1 = nutritionService.add(nutriton1);
-		int id2 = nutritionService.add(nutrion2);
+		int id1 = (int) nutritionService.add(nutriton1).getId();
+		int id2 = (int) nutritionService.add(nutrion2).getId();
 
 		Assert.assertNotNull(nutritionService.find(id1));
 		Assert.assertNotNull(nutritionService.find(id2));

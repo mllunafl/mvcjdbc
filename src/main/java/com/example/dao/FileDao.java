@@ -1,11 +1,9 @@
 package com.example.dao;
 
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.domain.File;
 
-public interface FileDao {
-	void addFile(int id, String file);
-	void deleteFile(int id);
-	List<String> fileList (int id);
+public interface FileDao extends JpaRepository<File, Integer>{
+
 }

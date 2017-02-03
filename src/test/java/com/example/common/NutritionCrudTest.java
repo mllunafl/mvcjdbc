@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.transaction.Transactional;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +16,7 @@ import com.example.domain.Nutrition;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Transactional
 public class NutritionCrudTest {
 
 	protected Random random = new Random();
@@ -22,7 +25,8 @@ public class NutritionCrudTest {
 
 	@Test
 	public void testDelete(){
-		int id = nutritionCrud.add(createNewNutrition());
+		Nutrition nutrition1 = nutritionCrud.add(createNewNutrition());
+		int id = (int) nutrition1.getId();
 		Nutrition nutrition2 = nutritionCrud.find(id);
 		Assert.assertNotNull(nutrition2);
 		nutritionCrud.delete(id);
@@ -33,7 +37,7 @@ public class NutritionCrudTest {
 	@Test
 	public void testUpdate() {
 		Nutrition nutrition1 = this.createNewNutrition();
-		int nut1Id = nutritionCrud.add(nutrition1);
+		int nut1Id = (int) nutritionCrud.add(nutrition1).getId();
 		
 		Nutrition nutrition2 = nutritionCrud.find(nut1Id);
 		nutrition2.setCalories(random.nextInt());
@@ -48,8 +52,8 @@ public class NutritionCrudTest {
 	public void testDeleteList(){
 		Nutrition nutriton1 = this.createNewNutrition();
 		Nutrition nutrion2 = this.createNewNutrition();
-		int id1 = nutritionCrud.add(nutriton1);
-		int id2 = nutritionCrud.add(nutrion2);
+		int id1 = (int) nutritionCrud.add(nutriton1).getId();
+		int id2 = (int) nutritionCrud.add(nutrion2).getId();
 		
 		Assert.assertNotNull(nutritionCrud.find(id1));
 		Assert.assertNotNull(nutritionCrud.find(id2));
@@ -78,7 +82,7 @@ public class NutritionCrudTest {
 		int carbs = random.nextInt();
 		nutrition.setCarbs(carbs);
 
-		int id = nutritionCrud.add(nutrition);
+		int id = (int) nutritionCrud.add(nutrition).getId();
 		Nutrition nutrition2 = nutritionCrud.find(id);
 		Assert.assertEquals(nutrition, nutrition2);
 	}

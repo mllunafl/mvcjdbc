@@ -31,6 +31,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.domain.File;
 import com.example.domain.Nutrition;
 import com.example.service.NutritionService;
 import com.example.storage.StorageService;
@@ -83,6 +84,7 @@ public class NutritionController {
     public String handleFileUpload(@RequestParam("file") MultipartFile file,@PathVariable("id") Integer id,Model model,
                                    RedirectAttributes redirectAttributes) {
         storageService.store(id, file);
+        	nutritionService.addFile(id, file.getOriginalFilename());
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 
@@ -157,14 +159,13 @@ public class NutritionController {
 			throw new RuntimeException("I'll be back");
 		}
 		model.addAttribute("nutrition", nutritionService.find(id));
-		model.addAttribute("files", nutritionService.find(id).getFilenames());
-		//		model.addAttribute("files", storageService
-//                .loadAll(id)
-//                .map(path ->
-//                        MvcUriComponentsBuilder
-//                                .fromMethodName(NutritionController.class, "serveFile", Integer.toString(id), path.getFileName().toString())
-//                                .build().toString())
-//                .collect(Collectors.toList()));
+		//model.addAttribute("files", nutritionService.find(id).getFiles());
+				model.addAttribute("files", nutritionService.find(id).getFiles().stream()
+                .map(file ->
+                        MvcUriComponentsBuilder
+                                .fromMethodName(NutritionController.class, "serveFile", Integer.toString(id), file.getFileName())
+                                .build().toString())
+                .collect(Collectors.toList()));
 		model.addAttribute("id", id);
 		return "nutr";
 	}

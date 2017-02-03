@@ -5,7 +5,7 @@ import java.util.List;
 import com.example.domain.Nutrition;
 
 public interface NutritionCrud {
-	int add(Nutrition nutrition);
+	Nutrition add(Nutrition nutrition);
 	List<Nutrition> findAll();
 	Nutrition find(int id);
 	void update(Nutrition nutrition);

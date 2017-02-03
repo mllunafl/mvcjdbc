@@ -4,9 +4,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+@Entity
+@Table( name = "nutrition")
 public class Nutrition implements Serializable {
 	
 	private long id;
@@ -21,12 +30,17 @@ public class Nutrition implements Serializable {
 	@NotNull
 	private int carbs;
 	
-	private List<String> filenames = new ArrayList<>();
+	private List<File> files = new ArrayList<>();
 	
-	
-	public List<String> getFilenames() {
-		return filenames;
+	@OneToMany(mappedBy = "nutriton", fetch=FetchType.LAZY)
+	public List<File> getFiles() {
+		return files;
 	}
+	public void setFile(List<File> files) {
+		this.files = files;
+	}
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	public long getId() {
 		return id;
 	}
@@ -51,21 +65,21 @@ public class Nutrition implements Serializable {
 	public void setCarbs(int carbs) {
 		this.carbs = carbs;
 	}
+
 	@Override
 	public String toString() {
 		return "Nutrition [id=" + id + ", product=" + product + ", calories=" + calories + ", carbs=" + carbs
-				+ ", filenames=" + filenames + "]";
+				+ ", file=" + files + "]";
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + calories;
-		result = prime * result + carbs;
-		result = prime * result + ((filenames == null) ? 0 : filenames.hashCode());
-		result = prime * result + ((product == null) ? 0 : product.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -75,20 +89,9 @@ public class Nutrition implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Nutrition other = (Nutrition) obj;
-		if (calories != other.calories)
-			return false;
-		if (carbs != other.carbs)
-			return false;
-		if (filenames == null) {
-			if (other.filenames != null)
-				return false;
-		} else if (!filenames.equals(other.filenames))
-			return false;
-		if (product == null) {
-			if (other.product != null)
-				return false;
-		} else if (!product.equals(other.product))
+		if (id != other.id)
 			return false;
 		return true;
 	}
+
 }

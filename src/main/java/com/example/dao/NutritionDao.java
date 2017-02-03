@@ -1,6 +1,9 @@
 package com.example.dao;
 
-import com.example.common.NutritionCrud;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface NutritionDao extends NutritionCrud{
+import com.example.domain.Nutrition;
+
+
+public interface NutritionDao extends JpaRepository<Nutrition, Integer> {
 }

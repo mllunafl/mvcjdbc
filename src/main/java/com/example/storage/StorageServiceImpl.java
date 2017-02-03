@@ -15,6 +15,7 @@ import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.dao.FileDao;
+import com.example.domain.File;
 
 
 
@@ -22,8 +23,6 @@ import com.example.dao.FileDao;
 public class StorageServiceImpl implements StorageService {
 
 	private final Path rootLocation;
-	@Autowired
-	FileDao fileDao;
 	
     @Autowired
     public StorageServiceImpl(StorageProperties properties) {
@@ -50,7 +49,6 @@ public class StorageServiceImpl implements StorageService {
 		} catch (IOException e) {
 			throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
 		}
-		fileDao.addFile(id, file.getOriginalFilename());
 	}
 
 	@Override
